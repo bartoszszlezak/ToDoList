@@ -11,10 +11,10 @@ function SignIn() {
                 <div className="formContainer">
                     <form>
                         <div className="mb-3">
-                            <input type="email" className="form-control" id="exampleInputEmail1" placeholder="Email or username"/>
+                            <input type="email" className="form-control" id="SignInEmail" placeholder="Email or username"/>
                         </div>
                         <div class="mb-3">
-                            <input type="password" className="form-control" placeholder="Password" id="exampleInputPassword1"/>
+                            <input type="password" className="form-control" placeholder="Password" id="SignInPassword"/>
                         </div>
                         <button type="submit" className="btn btn-primary">
                             Login

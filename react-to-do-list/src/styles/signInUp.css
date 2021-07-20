@@ -1,0 +1,125 @@
+.mainContainer{
+    background: #171a1d;
+    width: 100vw;
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.navbar.navbar-dark.bg-dark{
+    height: 10vh; 
+    width: 100vw;  
+    background-color: #171a1d !important; 
+}
+
+.appName{
+    position: absolute;
+    width: 20%;
+    height: 50px;
+    left: 30px;
+    top: 30px;
+
+    font-family: ZCOOL KuaiLe !important;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 50px;
+    line-height: 64px;
+
+    color: #FF9900;
+}
+
+.logInContainer{
+    
+    width: 40%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #2D2D2D;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+}
+
+.loginHeader{
+    font-family: Roboto !important;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 64px;
+    line-height: 75px;
+    text-align: center;
+    color: #FF9900;
+    margin-top: 10px;
+}
+
+.formContainer{
+    height: 70%;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.formContainer > form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1em;
+}
+
+.btn.btn-primary{
+    width: 30%;
+    background-color: #FF9900;
+    border: 1px solid #000;
+    margin-top: 30px;
+}
+
+.btn.btn-primary:hover{
+    background-color: #ff8800;
+    border: 1px solid #000;
+}
+
+.mb-3{
+    width: 80%;
+}
+
+.form-control{
+    width: 100%;
+}
+
+.createAccountContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 20%;
+}
+
+.createAccountContainer > p {
+    padding: 1em;
+    color: #fff;
+    font-size: 20px;
+}
+
+.createAccount {
+    text-decoration: none;
+    color: #FF9900;
+    font-size: 30px;
+    font-family: Roboto;
+}
+
+.accountLink {
+    text-decoration: none;
+}
+
+.fas.fa-arrow-left{
+    font-size: 30px;
+    margin-left: 30px;
+    color: #fff;
+}
+
+.accountLinkContainer{
+    width: 100%;
+}
