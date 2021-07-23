@@ -1,0 +1,130 @@
+.fas.fa-plus-circle{
+    font-size: 50px;
+    color: #FF9900;;
+}
+
+.toDoListContainer{
+    width: 40%;
+    height: 90%;
+    background-color: #242023;
+    display: flex;
+    flex-direction: column;
+}
+
+.contentContainer{
+    margin-top: 30px;
+    width: 100%;
+    height: 70%;
+    background-color: #242023;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.searchContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn.btn-secondary{
+    background-color: #FF9900;
+    margin: 2% 5%
+}
+
+.openModalContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.openModalContainer > p{
+    margin-top: 30px;
+}
+
+.newTasksContainer{
+    margin-top: 10px;
+    padding: 1em;
+    border-top: 4px solid #FF9900;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    width: 90%;
+    height: 100%;
+    overflow: auto;
+}
+
+.btn.btn-danger{
+    margin-top: 10px;
+    margin-right: 20px;
+    width: 20%;
+}
+
+.btn.btn-warning{
+    margin-top: 10px;
+    width: 20%;
+}
+
+.buttonsContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+#taskNameInput{
+    background-color: transparent;
+    color: #fff;
+}
+
+.addedTaskContainer{
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #FF9900;
+    margin-bottom: 10px;
+}
+
+.newTaskName{
+    color: #fff;
+    margin: 10px 10px
+}
+
+.newTaskContainerButtons{
+    width: 100%;
+    height: 15%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.myListsContainer{
+    width: 80%;
+    height: 10%;
+    background: #2D2D2D;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.myListName{
+    margin: 10px 10px;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 28px;
+    color: #FFFFFF
+}
+
+.myListInfo{
+    margin: 10px 10px;
+    font-family: Roboto;
+    font-style: italic;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 28px;
+
+    color: #FFFFFF;
+}

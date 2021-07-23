@@ -20,10 +20,13 @@ function SignIn() {
         try {
             const resp = await axios.post("https://recruitment.ultimate.systems/auth/local", details).then(response => {
                 if(response.data != null){
+                    console.log(response.data)
                     const token = response.data.jwt
+                    const todo = response.data.user.to_do_lists
                     const id = response.data.user.id
                     localStorage.setItem('access_token', JSON.stringify(token))
                     localStorage.setItem('user_id', id)
+                    localStorage.setItem('to_do_lists', todo)
                 }
                 saveLocal()
             }   
@@ -48,7 +51,7 @@ function SignIn() {
                                 className="form-control" 
                                 id="SignInEmail" 
                                 onChange={e => setDetails({...details, identifier: e.target.value})}
-                                value={details.email}
+                                value={details.identifier}
                                 placeholder="Email or username"/>
                         </div>
                         <div className="mb-3">
