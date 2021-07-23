@@ -6,11 +6,15 @@ import { Input } from 'antd';
 import Modal from "@material-ui/core/Modal";
 import axios from 'axios';
 
+let listIndex;
 
 
 function ToDoList() {
 
-
+    // axios.defaults.headers.common = {
+    //     Authorization: "Bearer " + localStorage.getItem('access_token')
+    // }
+    
     const { Search } = Input;
     const [searchText, setSearchText] = useState("");
     const onSearch = value => {
@@ -24,6 +28,9 @@ function ToDoList() {
     const [newList, setNewList] = useState([]);
     const [newTask, setNewTask] = useState({name: "", isDone: false});
 
+    const [openUpdate, setOpenUpdate] = useState(false);
+    const [updateList, setUpdateList] = useState([]);
+
     const [requestBody, setRequestBody] = useState({name: "", task: []})
 
     const [myLists, setMyLists] = useState([]);
@@ -35,9 +42,20 @@ function ToDoList() {
     const handleOpen = () => {
       setOpen(true);
     };
+
+    const handleOpenUpdate = (e) => {
+        setOpenUpdate(true);
+        listIndex = e;
+        console.log(listIndex);
+        setUpdateList(myLists[listIndex].task);
+      };
   
     const handleClose = () => {
       setOpen(false);
+    };
+
+    const handleCloseUpdate = () => {
+        setOpenUpdate(false);
     };
 
     const handleTaskCancel = () => {
@@ -49,6 +67,48 @@ function ToDoList() {
         setNewList([...newList, newTask]);
     }
 
+    const handleAddUpdate = () => {
+        setUpdateList([...updateList, newTask]);
+    }
+
+    const handleCancelUpdateAll = () => {
+        setUpdateList([]);
+        setNameList("");
+        setNewTask({name: "", isDone: false});
+        handleCloseUpdate();
+    }
+
+    const handleStatus = () => {
+        
+    }
+
+    const handleSaveUpdate = () => {
+
+        //const token = localStorage.getItem('access_token')
+
+        setRequestBody({name: myLists[listIndex].name, task: updateList});
+        if(nameList != ""){
+            myLists[listIndex].name = nameList;
+        }
+        myLists[listIndex].task = updateList;
+        setNameList("");
+        setNewTask({name: "", isDone: false});
+        setUpdateList([]);
+        console.log(requestBody);
+        handleCloseUpdate();
+
+        // axios.put("https://recruitment.ultimate.systems//to-do-lists/{id}", requestBody, {headers: {
+        //     "Content-type": "Application/json",
+        //     "Authorization": `Bearer ${token}`
+        //     }   
+        // })
+        // .then(response => {
+        //     if(response.data != null){
+        //         console.log(response.data)
+        //     }
+        // });
+    }
+
     const handleCancelAll = () => {
         setNameList("");
         setNewTask({name: "", isDone: false});
@@ -57,9 +117,6 @@ function ToDoList() {
 
     };
 
-    axios.defaults.headers.common = {
-        Authorization: "Bearer " + localStorage.getItem('access_token')
-    }
 
     const handleSave = () => {
 
@@ -69,7 +126,6 @@ function ToDoList() {
         setNameList("");
         setNewTask({name: "", isDone: false});
         setNewList([]);
-        console.log(myLists);
         handleClose();
 
         
@@ -122,7 +178,7 @@ function ToDoList() {
                 </div>
                 <div className="contentContainer">
                 {search(myLists).map(ml => (
-                            <div key={myLists.indexOf(ml)} className="myListsContainer" onClick={handleOpen}>
+                            <div key={myLists.indexOf(ml)} className="myListsContainer" onClick={() => handleOpenUpdate(myLists.indexOf(ml))}>
                                     <p className="myListName">{ml.name}</p>
                                     <p className="myListInfo">Created at: 18-03-2021</p>  
                                     <p className="myListInfo">completed: 15 Uncompleted: 10 All: 25</p>                          
@@ -201,6 +257,73 @@ function ToDoList() {
                         </div>
                     </div>
                 </Modal>
+
+                <Modal
+                    open={openUpdate}
+                    onClose={handleCloseUpdate}
+                    aria-labelledby="simple-modal-title"
+                    aria-describedby="simple-modal-description"
+                >
+                    <div style={
+                            {position: "absolute", 
+                            top:"20%", left:"30%", 
+                            width:"40%", 
+                            height:"60%", 
+                            backgroundColor:"#2D2D2D", 
+                            display:'flex', 
+                            flexDirection: "column",
+                            alignItems:"center"}}>
+                        <input
+                            style={{width:"80%", marginTop: "10px"}}
+                            type="text" 
+                            name="listNameInput"
+                            className="form-control" 
+                            id="listNameInput" 
+                            onChange={e => setNameList(e.target.value)}
+                            value={nameList}
+                            placeholder={listIndex != null && myLists.length != 0 ? myLists[listIndex].name : "List Name"}
+                            required
+                            />
+                        <div className="newTasksContainer">
+                            {updateList.length != 0 ? (updateList.map(t => (
+                            <div key={t.name} className="addedTaskContainer">
+                                <div className="input-group-text" style={{width:"10%"}}>
+                                    <input className="form-check-input mt-0" type="checkbox" id={updateList.indexOf(t)} onClick={() => handleStatus(updateList.indexOf(t))}/>
+                                </div>
+                                <div className="newTaskNameWrapper"> 
+                                    <p className="newTaskName">{t.name}</p>
+                                </div>
+                                
+                            </div>
+                            ))) : null}
+                            <div className="input-group mb-3">
+                                <div className="input-group-text">
+                                    {/* <input className="form-check-input mt-0" type="checkbox" /> */}
+                                </div>
+                                <input
+                                    type="text" 
+                                    name="taskNameInput"
+                                    required
+                                    className="form-control" 
+                                    id="taskNameInput" 
+                                    onChange={e => setNewTask({...newTask, name: e.target.value})}
+                                    value={newTask.name}
+                                    placeholder="Task name"/>
+                            </div>
+
+                            <div className="buttonsContainer">
+                                <button type="button" className="btn btn-danger" onClick={handleTaskCancel}>CANCEL</button>
+                                <button type="button" className="btn btn-warning" onClick={handleAddUpdate}>ADD</button>
+                            </div>
+                            
+                        </div>
+                        <div className="newTaskContainerButtons">
+                            <button type="button" className="btn btn-danger" onClick={handleCancelUpdateAll}>CANCEL</button>
+                            <button type="button" className="btn btn-warning" onClick={handleSaveUpdate}>SAVE</button>
+                        </div>
+                    </div>
+                </Modal>
+
             </div>
         </div>
     )
