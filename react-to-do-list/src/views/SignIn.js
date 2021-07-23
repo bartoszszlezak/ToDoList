@@ -18,7 +18,7 @@ function SignIn() {
     const submitfunc = async (e) => {
         e.preventDefault();
         try {
-            const resp = await axios.post("https://recruitment.ultimate.systems/auth/local", details).then(response => {
+            await axios.post("https://recruitment.ultimate.systems/auth/local", details).then(response => {
                 if(response.data != null){
                     console.log(response.data)
                     const token = response.data.jwt
@@ -63,7 +63,7 @@ function SignIn() {
                                 onChange={e => setDetails({...details, password: e.target.value})}
                                 value={details.password}/>
                         </div>
-                        <button type="submit" className="btn btn-primary" type="submit">
+                        <button type="submit" className="btn btn-primary">
                             Login
                         </button>
                     </form>

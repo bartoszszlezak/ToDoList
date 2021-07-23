@@ -4,12 +4,13 @@ import "../styles/todolist.css"
 import 'antd/dist/antd.css';
 import { Input } from 'antd';
 import Modal from "@material-ui/core/Modal";
-import axios from 'axios';
+// import axios from 'axios';
 
 let listIndex;
 
 
 function ToDoList() {
+
 
     // axios.defaults.headers.common = {
     //     Authorization: "Bearer " + localStorage.getItem('access_token')
@@ -78,8 +79,12 @@ function ToDoList() {
         handleCloseUpdate();
     }
 
-    const handleStatus = () => {
-        
+    const handleStatus = (status) => {
+        if(document.getElementById(status).checked === true){
+            updateList[status].isDone=true;
+        }else{
+            updateList[status].isDone=false;
+        }
     }
 
     const handleSaveUpdate = () => {
@@ -87,7 +92,7 @@ function ToDoList() {
         //const token = localStorage.getItem('access_token')
 
         setRequestBody({name: myLists[listIndex].name, task: updateList});
-        if(nameList != ""){
+        if(nameList !== ""){
             myLists[listIndex].name = nameList;
         }
         myLists[listIndex].task = updateList;
@@ -231,9 +236,6 @@ function ToDoList() {
                             </div>
                             ))}
                             <div className="input-group mb-3">
-                                <div className="input-group-text">
-                                    <input className="form-check-input mt-0" type="checkbox" />
-                                </div>
                                 <input
                                     type="text" 
                                     name="taskNameInput"
@@ -285,10 +287,10 @@ function ToDoList() {
                             required
                             />
                         <div className="newTasksContainer">
-                            {updateList.length != 0 ? (updateList.map(t => (
+                            {updateList.length !== 0 ? (updateList.map(t => (
                             <div key={t.name} className="addedTaskContainer">
                                 <div className="input-group-text" style={{width:"10%"}}>
-                                    <input className="form-check-input mt-0" type="checkbox" id={updateList.indexOf(t)} onClick={() => handleStatus(updateList.indexOf(t))}/>
+                                    <input className="form-check-input mt-0" type="checkbox" checked={t.isDone ? true : false} id={updateList.indexOf(t)} onChange={() => handleStatus(updateList.indexOf(t))}/>
                                 </div>
                                 <div className="newTaskNameWrapper"> 
                                     <p className="newTaskName">{t.name}</p>
@@ -297,9 +299,6 @@ function ToDoList() {
                             </div>
                             ))) : null}
                             <div className="input-group mb-3">
-                                <div className="input-group-text">
-                                    {/* <input className="form-check-input mt-0" type="checkbox" /> */}
-                                </div>
                                 <input
                                     type="text" 
                                     name="taskNameInput"
