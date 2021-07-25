@@ -60,7 +60,7 @@
     width: 20%;
 }
 
-.btn.btn-warning{
+.btn.btn-warning, .btn.btn-dark{
     margin-top: 10px;
     width: 20%;
 }
