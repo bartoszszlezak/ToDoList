@@ -19,5 +19,5 @@ Application for organizing tasks in 'to do lists'.
 Project is created with:
 * Material - UI: v4.12.2
 * Ant Design: v4.16.8
-* Bootstrap: v5.0
+* Bootstrap: v5.0.2
 * React: v17.0.2
