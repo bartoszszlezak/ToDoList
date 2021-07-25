@@ -4,33 +4,33 @@ import axios from 'axios';
 
 function SignIn() {
 
-    const [details, setDetails] = useState({identifier: "", password: ""});
+    const [details, setDetails] = useState({ identifier: "", password: "" });
     let history = useHistory();
 
 
     const saveLocal = () => {
-        if(localStorage.getItem("access_token")){
-            history.push("/todolist")
-        }else{
-            history.push("/")
+        if (localStorage.getItem("access_token")) {
+            history.push("/todolist");
+        } else {
+            history.push("/");
         }
     }
     const submitfunc = async (e) => {
         e.preventDefault();
         try {
             await axios.post("https://recruitment.ultimate.systems/auth/local", details).then(response => {
-                if(response.data != null){
-                    console.log(response.data)
-                    const token = response.data.jwt
-                    const todo = response.data.user.to_do_lists
-                    const id = response.data.user.id
-                    localStorage.setItem('access_token', JSON.stringify(token))
-                    localStorage.setItem('user_id', id)
-                    localStorage.setItem('to_do_lists', todo)
+                if (response.data != null) {
+                    console.log(response.data);
+                    const token = response.data.jwt;
+                    const todo = response.data.user.to_do_lists;
+                    const id = response.data.user.id;
+                    localStorage.setItem('access_token', JSON.stringify(token));
+                    localStorage.setItem('user_id', id);
+                    localStorage.setItem('to_do_lists', todo);
                 }
-                saveLocal()
-            }   
-        );
+                saveLocal();
+            }
+            );
         } catch (err) {
             console.error(err);
         }
@@ -45,23 +45,23 @@ function SignIn() {
                 <div className="formContainer">
                     <form onSubmit={submitfunc}>
                         <div className="mb-3">
-                            <input 
-                                type="text" 
+                            <input
+                                type="text"
                                 name="identifier"
-                                className="form-control" 
-                                id="SignInEmail" 
-                                onChange={e => setDetails({...details, identifier: e.target.value})}
+                                className="form-control"
+                                id="SignInEmail"
+                                onChange={e => setDetails({ ...details, identifier: e.target.value })}
                                 value={details.identifier}
-                                placeholder="Email or username"/>
+                                placeholder="Email or username" />
                         </div>
                         <div className="mb-3">
-                            <input 
-                                type="password" 
-                                className="form-control" 
-                                placeholder="Password" 
+                            <input
+                                type="password"
+                                className="form-control"
+                                placeholder="Password"
                                 id="SignInPassword"
-                                onChange={e => setDetails({...details, password: e.target.value})}
-                                value={details.password}/>
+                                onChange={e => setDetails({ ...details, password: e.target.value })}
+                                value={details.password} />
                         </div>
                         <button type="submit" className="btn btn-primary">
                             Login
@@ -83,4 +83,4 @@ function SignIn() {
     )
 }
 
-export default SignIn
+export default SignIn;
