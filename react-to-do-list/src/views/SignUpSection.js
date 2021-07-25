@@ -7,20 +7,20 @@ const SignUpSection = () => {
     const [isSubmitted, setIsSubmitted] = useState(false);
 
     function submitForm() {
-      setIsSubmitted(true);
+        setIsSubmitted(true);
     }
 
     return (
         <>
 
             {!isSubmitted ? (
-            <SignUp submitForm={submitForm} />
+                <SignUp submitForm={submitForm} />
             ) : (
                 <div className="mainContainer">
                     <Link to='/'>
                         <button type="button" class="btn btn-success">Success</button>
                     </Link>
-                </div>  
+                </div>
             )}
 
 

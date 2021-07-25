@@ -1,10 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const api = axios.create({
-  baseURL: `https://recruitment.ultimate.systems/auth/local/registration`
-})
-
 const ServiceRegistration = (submitForm, validate) => {
   const [values, setValues] = useState({
     username: '',
@@ -34,13 +30,13 @@ const ServiceRegistration = (submitForm, validate) => {
     () => {
       if (Object.keys(errors).length === 0 && isSubmitting) {
 
-        api.post("https://recruitment.ultimate.systems/auth/local/register", values)
-            .then(response => {
-                if(response.data != null){
-                  console.log(response.data)
-                }
-                
-            });
+        axios.post("https://recruitment.ultimate.systems/auth/local/register", values)
+          .then(response => {
+            if (response.data != null) {
+              console.log(response.data)
+            }
+
+          });
 
         submitForm();
       }

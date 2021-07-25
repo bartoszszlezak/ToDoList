@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/signInUp.css';
-import {useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 function Navbar() {
 
@@ -8,17 +8,17 @@ function Navbar() {
     let history = useHistory();
 
     useEffect(() => {
-        if(localStorage.getItem('access_token')){
+        if (localStorage.getItem('access_token')) {
             setLogged(true);
         }
     }, [logged]);
 
     const handleLogOut = () => {
-            setLogged(false);
-            localStorage.removeItem('access_token');
-            localStorage.removeItem('user_id')
-            localStorage.removeItem('to_do_lists')
-            history.push("/");
+        setLogged(false);
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('user_id');
+        localStorage.removeItem('to_do_lists');
+        history.push("/");
     }
 
     return (
@@ -28,9 +28,9 @@ function Navbar() {
                     ToDo-List
                 </p>
                 <p className={logged ? 'iconSignOut' : 'noIcon'}>
-                    <i className="fas fa-sign-out-alt"  onClick={handleLogOut}/>
+                    <i className="fas fa-sign-out-alt" onClick={handleLogOut} />
                 </p>
-            </nav>   
+            </nav>
         </>
     )
 }
