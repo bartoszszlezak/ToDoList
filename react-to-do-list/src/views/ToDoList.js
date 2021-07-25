@@ -1,10 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import "../styles/todolist.css"
 import 'antd/dist/antd.css';
 import { Input } from 'antd';
 import Modal from "@material-ui/core/Modal";
 import axios from 'axios';
+import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Grow from '@material-ui/core/Grow';
+import Paper from '@material-ui/core/Paper';
+import Popper from '@material-ui/core/Popper';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
 
 let listIndex;
 
@@ -32,9 +41,17 @@ function ToDoList() {
     const [openUpdate, setOpenUpdate] = useState(false);
     const [updateList, setUpdateList] = useState([]);
 
+    const [openInfo, setOpenInfo] = useState(false);
+
     const [requestBody, setRequestBody] = useState({name: "", task: []})
 
     const [myLists, setMyLists] = useState([]);
+
+    const options = ["Alphabetically", "Reverse"];
+    const [openSort, setOpenSort] = useState(false);
+    const anchorRef = useRef(null);
+    const [selectedIndex, setSelectedIndex] = useState(1);
+
 
     if(!localStorage.getItem("access_token")){
         history.push("/")
@@ -48,6 +65,10 @@ function ToDoList() {
         setOpenUpdate(true);
         listIndex = e;
         setUpdateList(myLists[listIndex].task);
+    };
+
+    const handleOpenInfo = () => {
+        setOpenInfo(true);
       };
   
     const handleClose = () => {
@@ -56,6 +77,10 @@ function ToDoList() {
 
     const handleCloseUpdate = () => {
         setOpenUpdate(false);
+    };
+
+    const handleCloseInfo = () => {
+        setOpenInfo(false);
     };
 
     const handleTaskCancel = () => {
@@ -115,7 +140,7 @@ function ToDoList() {
     const handleDeleteList = () => {
 
         //const token = localStorage.getItem('access_token')
-        
+
         handleCloseUpdate();
         myLists.splice(listIndex,1);
 
@@ -162,6 +187,47 @@ function ToDoList() {
         // });
     }
 
+
+    const alphabeticSort  = () => {
+        handleOpenInfo();
+        setMyLists(myLists.sort(({ name: a }, { name: b }) => {
+            return (a < b) ? -1 : ((a > b) ? 1 : 0);
+            }));
+    }
+
+    const reverseSort = () => {
+        handleOpenInfo();
+        setMyLists(myLists.reverse());;
+    }
+
+
+    const handleClickSort = () => {
+        if(options[selectedIndex] === "Alphabetically"){
+            alphabeticSort();
+        }else{
+            reverseSort();
+        }
+        
+    };
+
+    const handleMenuItemClick = (event, index) => {
+        setSelectedIndex(index);
+        setOpenSort(false);
+    };
+
+    const handleToggleSort = () => {
+        setOpenSort((prevOpen) => !prevOpen);
+    };
+
+    const handleCloseSort = (event) => {
+        if (anchorRef.current && anchorRef.current.contains(event.target)) {
+        return;
+        }
+
+        setOpenSort(false);
+    };
+
+
     function search(myLists) {
 
         const listKey = ["name"];
@@ -195,7 +261,50 @@ function ToDoList() {
             <div className="toDoListContainer">
                 <div className="searchContainer">
                     <Search placeholder="Search" allowClear onSearch={onSearch} style={{ width:200, margin:"2% 5%"} } />
-                    <button type="button" className="btn btn-secondary">Sort</button>
+                
+                    <ButtonGroup variant="contained" color="secondary" ref={anchorRef} aria-label="split button">
+                        <Button onClick={handleClickSort}>{options[selectedIndex]}</Button>
+                        <Button
+                            color="secondary"
+                            size="small"
+                            aria-controls={openSort ? 'split-button-menu' : undefined}
+                            aria-expanded={openSort ? 'true' : undefined}
+                            aria-label="select merge strategy"
+                            aria-haspopup="menu"
+                            onClick={handleToggleSort}
+                        >
+                            <ArrowDropDownIcon />
+                        </Button>
+                    </ButtonGroup>
+                    <Popper open={openSort} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
+                    {({ TransitionProps, placement }) => (
+                        <Grow
+                        {...TransitionProps}
+                        style={{
+                            transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom',
+                        }}
+                        >
+                        <Paper>
+                            <ClickAwayListener onClickAway={handleCloseSort}>
+                            <MenuList id="split-button-menu">
+                                {options.map((option, index) => (
+                                <MenuItem
+                                    key={option}
+                                    disabled={index === 2}
+                                    selected={index === selectedIndex}
+                                    onClick={(event) => handleMenuItemClick(event, index)}
+                                >
+                                    {option}
+                                </MenuItem>
+                                ))}
+                            </MenuList>
+                            </ClickAwayListener>
+                        </Paper>
+                        </Grow>
+                    )}
+                    </Popper>
+                    
+                    {/* <button type="button" className="btn btn-secondary">Sort</button> */}
                 </div>
                 <div className="contentContainer">
                 {search(myLists).map(ml => (
@@ -335,7 +444,31 @@ function ToDoList() {
                         <div className="newTaskContainerButtons">
                             <button type="button" className="btn btn-danger" onClick={handleCancelUpdateAll}>CANCEL</button>
                             <button type="button" className="btn btn-warning" onClick={handleSaveUpdate}>SAVE</button>
-                            <button type="button" class="btn btn-dark" onClick={handleDeleteList}>Delete List</button>
+                            <button type="button" className="btn btn-dark" onClick={handleDeleteList}>Delete List</button>
+                        </div>
+                    </div>
+                </Modal>
+
+
+                <Modal
+                    open={openInfo}
+                    onClose={handleCloseInfo}
+                    aria-labelledby="simple-modal-title"
+                    aria-describedby="simple-modal-description"
+                >
+                    <div style={
+                            {position: "absolute", 
+                            top:"40%", left:"40%", 
+                            width:"20%", 
+                            height:"20%", 
+                            backgroundColor:"#2D2D2D",
+                            border:"1px solid white", 
+                            display:'flex', 
+                            flexDirection: "column",
+                            alignItems:"center"}}>
+                        <div className="modalInfoWrapper">
+                            <p className="modalInfoSuccess">Sorting complete</p>
+                            <button type="button" className="btn btn-success" onClick={handleCloseInfo}>Confirm</button>
                         </div>
                     </div>
                 </Modal>
