@@ -4,7 +4,7 @@ import "../styles/todolist.css"
 import 'antd/dist/antd.css';
 import { Input } from 'antd';
 import Modal from "@material-ui/core/Modal";
-// import axios from 'axios';
+import axios from 'axios';
 
 let listIndex;
 
@@ -12,9 +12,9 @@ let listIndex;
 function ToDoList() {
 
 
-    // axios.defaults.headers.common = {
-    //     Authorization: "Bearer " + localStorage.getItem('access_token')
-    // }
+    axios.defaults.headers.common = {
+        Authorization: "Bearer " + localStorage.getItem('access_token')
+    }
     
     const { Search } = Input;
     const [searchText, setSearchText] = useState("");
@@ -47,7 +47,6 @@ function ToDoList() {
     const handleOpenUpdate = (e) => {
         setOpenUpdate(true);
         listIndex = e;
-        console.log(listIndex);
         setUpdateList(myLists[listIndex].task);
       };
   
@@ -99,7 +98,6 @@ function ToDoList() {
         setNameList("");
         setNewTask({name: "", isDone: false});
         setUpdateList([]);
-        console.log(requestBody);
         handleCloseUpdate();
 
         // axios.put("https://recruitment.ultimate.systems//to-do-lists/{id}", requestBody, {headers: {
@@ -114,12 +112,30 @@ function ToDoList() {
         // });
     }
 
+    const handleDeleteList = () => {
+
+        //const token = localStorage.getItem('access_token')
+        
+        handleCloseUpdate();
+        myLists.splice(listIndex,1);
+
+        // axios.delete("https://recruitment.ultimate.systems//to-do-lists/{id}", {headers: {
+        //     "Authorization": `Bearer ${token}`
+        //     }   
+        // })
+        // .then(response => {
+        //     if(response.data != null){
+        //         console.log(response.data)
+        //     }
+        // });
+
+    }
+
     const handleCancelAll = () => {
         setNameList("");
         setNewTask({name: "", isDone: false});
         setNewList([]);
         handleClose();
-
     };
 
 
@@ -283,7 +299,7 @@ function ToDoList() {
                             id="listNameInput" 
                             onChange={e => setNameList(e.target.value)}
                             value={nameList}
-                            placeholder={listIndex != null && myLists.length != 0 ? myLists[listIndex].name : "List Name"}
+                            placeholder={listIndex != null && myLists.length != 0 && myLists[listIndex] ? myLists[listIndex].name : "List Name"}
                             required
                             />
                         <div className="newTasksContainer">
@@ -319,6 +335,7 @@ function ToDoList() {
                         <div className="newTaskContainerButtons">
                             <button type="button" className="btn btn-danger" onClick={handleCancelUpdateAll}>CANCEL</button>
                             <button type="button" className="btn btn-warning" onClick={handleSaveUpdate}>SAVE</button>
+                            <button type="button" class="btn btn-dark" onClick={handleDeleteList}>Delete List</button>
                         </div>
                     </div>
                 </Modal>
